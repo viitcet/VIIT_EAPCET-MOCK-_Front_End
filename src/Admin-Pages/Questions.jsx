@@ -23,10 +23,10 @@ const simpleCSVParse = (csvText) => {
         optionB: cleanedCols[2] || "",
         optionC: cleanedCols[3] || "",
         optionD: cleanedCols[4] || "",
-        subject: cleanedCols[5] || "",
+        subject: (cleanedCols[5] || "").toUpperCase(),
         topic: cleanedCols[6] || "",
-        difficulty: cleanedCols[7] || "",
-        answer: cleanedCols[8] || "",
+        difficulty: (cleanedCols[7] || "").toUpperCase(),
+        answer: (cleanedCols[8] || "").toUpperCase(),
         questionImage: null,
         optionAImage: null,
         optionBImage: null,
@@ -45,7 +45,7 @@ function Questions() {
   const [isUploading, setIsUploading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [openPreview, setOpenPreview] = useState(false);
-  const [ques, setQues] = useState({}); // subject wise number of questions
+  const [ques, setQues] = useState({}); 
   const [quesLoading, setQuesLoading] = useState(false);
 
   const handleUploadClick = () => fileInputRef.current.click();
@@ -87,14 +87,14 @@ function Questions() {
     const newQuestion = {
       id: Date.now(),
       question: "New Question Text",
-      subject: subject,
+      subject: subject.toUpperCase(),
       topic: topic,
-      difficulty: difficulty,
+      difficulty: difficulty.toUpperCase(),
       optionA: "Option A Text",
       optionB: "Option B Text",
       optionC: "Option C Text",
       optionD: "Option D Text",
-      answer: `Option ${correctOption}`,
+      answer: `Option ${correctOption.toUpperCase()}`,
       questionImage: null,
       optionAImage: null,
       optionBImage: null,
@@ -140,10 +140,10 @@ function Questions() {
         optionB: q.optionB,
         optionC: q.optionC,
         optionD: q.optionD,
-        subject: q.subject,
+        subject: (q.subject || "").toUpperCase(),
         topic: q.topic,
-        difficulty: q.difficulty,
-        answer: q.answer.at(-1),
+        difficulty: (q.difficulty || "").toUpperCase(),
+        answer: String(q.answer || "").trim().at(-1)?.toUpperCase() || "",
         id: q.id,
       };
       questionsPayload.push(questionData);
@@ -221,7 +221,17 @@ function Questions() {
                 onUpdate={(index, field, val) => {
                   setQuestions((prev) => {
                     const copy = [...prev];
-                    copy[index][field] = val;
+                    let newVal = val;
+                    if (field === "subject" || field === "difficulty") {
+                      newVal = (val || "").toUpperCase();
+                    }
+                    if (field === "answer") {
+                      if (typeof val === "string") {
+                        const last = val.trim().at(-1) || "";
+                        newVal = `Option ${String(last).toUpperCase()}`;
+                      }
+                    }
+                    copy[index][field] = newVal;
                     return copy;
                   });
                 }}
@@ -245,8 +255,6 @@ function Questions() {
           <h2 className="text-xl md:text-2xl font-semibold text-gray-900 mb-6">
             Add Question
           </h2>
-
-          {/* Upload Section */}
           <div className="flex flex-col space-y-3 mb-8">
             <div className="flex flex-wrap gap-4">
               <button
