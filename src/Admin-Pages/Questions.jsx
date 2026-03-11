@@ -24,7 +24,7 @@ const simpleCSVParse = (csvText) => {
         optionC: cleanedCols[3] || "",
         optionD: cleanedCols[4] || "",
         subject: (cleanedCols[5] || "").toUpperCase(),
-        topic: cleanedCols[6] || "",
+        topic: (cleanedCols[6] || "").trim().toUpperCase(),
         difficulty: (cleanedCols[7] || "").toUpperCase(),
         answer: (cleanedCols[8] || "").toUpperCase(),
         questionImage: null,
