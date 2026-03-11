@@ -6,27 +6,48 @@ import Loader from "../components/Loader";
 import LazyPreviewList from "../components/LazyPreviewList";
 
 import { Menu as MenuIcon, Upload, FileText, PlusCircle } from "lucide-react";
+import Papa from "papaparse";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "";
 
-const simpleCSVParse = (csvText) => {
-  const rows = csvText.trim().split("\n").slice(1);
-  return rows
-    .map((row, index) => {
-      const cols = row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g) || [];
-      const cleanedCols = cols.map((c) => c.trim().replace(/^"|"$/g, ""));
-      if (cleanedCols.length < 6) return null;
+// helper maps for unicode digits
+const subMap = { '₀': '0', '₁': '1', '₂': '2', '₃': '3', '₄': '4', '₅': '5', '₆': '6', '₇': '7', '₈': '8', '₉': '9' };
+const supMap = { '⁰': '0', '¹': '1', '²': '2', '³': '3', '⁴': '4', '⁵': '5', '⁶': '6', '⁷': '7', '⁸': '8', '⁹': '9', '⁺': '+', '⁻': '-' };
+
+const normalizeSubSup = (raw) => {
+  if (!raw || typeof raw !== 'string') return raw || '';
+  if (/<\/?(sub|sup|span)/i.test(raw)) return raw;
+  let s = raw;
+  s = s.replace(/([A-Za-z\)])([₀₁₂₃₄₅₆₇₈₉]+)/g, (_m, p1, p2) => p1 + '<sub>' + [...p2].map(ch => subMap[ch] || ch).join('') + '</sub>');
+  s = s.replace(/([A-Za-z\)])([⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻]+)/g, (_m, p1, p2) => p1 + '<sup>' + [...p2].map(ch => supMap[ch] || ch).join('') + '</sup>');
+  s = s.replace(/_\{([^}]+)\}/g, '<sub>$1</sub>');
+  s = s.replace(/\^\{([^}]+)\}/g, '<sup>$1</sup>');
+  s = s.replace(/_([0-9+-]+)/g, '<sub>$1</sub>');
+  s = s.replace(/\^([0-9+-]+)/g, '<sup>$1</sup>');
+  s = s.replace(/([A-Za-z\)])([0-9]+)/g, '$1<sub>$2</sub>');
+  s = s.replace(/([0-9]+)([+-])(?![^<]*>)/g, '<sup>$1$2</sup>');
+  return s;
+};
+
+const rowsToQuestions = (allRows) => {
+  let dataRows = allRows;
+  if (allRows.length > 0 && allRows[0].some((c) => /question/i.test(c || ''))) {
+    dataRows = allRows.slice(1);
+  }
+  return dataRows
+    .map((cols, index) => {
+      if (!cols || cols.length < 6) return null;
       return {
         id: Date.now() + index,
-        question: cleanedCols[0] || "",
-        optionA: cleanedCols[1] || "",
-        optionB: cleanedCols[2] || "",
-        optionC: cleanedCols[3] || "",
-        optionD: cleanedCols[4] || "",
-        subject: (cleanedCols[5] || "").toUpperCase(),
-        topic: (cleanedCols[6] || "").trim().toUpperCase(),
-        difficulty: (cleanedCols[7] || "").toUpperCase(),
-        answer: (cleanedCols[8] || "").toUpperCase(),
+        question: normalizeSubSup(cols[0] || ""),
+        optionA: normalizeSubSup(cols[1] || ""),
+        optionB: normalizeSubSup(cols[2] || ""),
+        optionC: normalizeSubSup(cols[3] || ""),
+        optionD: normalizeSubSup(cols[4] || ""),
+        subject: (cols[5] || "").toUpperCase(),
+        topic: (cols[6] || "").toUpperCase(),
+        difficulty: (cols[7] || "").toUpperCase(),
+        answer: (cols[8] || "").toUpperCase(),
         questionImage: null,
         optionAImage: null,
         optionBImage: null,
@@ -57,11 +78,47 @@ function Questions() {
     setFileName(file.name);
     const reader = new FileReader();
     reader.onload = (event) => {
-      const text = event.target.result;
-      const parsed = simpleCSVParse(text);
-      setQuestions(parsed);
+      try {
+        const ab = event.target.result;
+        const bytes = new Uint8Array(ab);
+        let encoding = 'utf-8';
+        if (bytes.length >= 3 && bytes[0] === 0xef && bytes[1] === 0xbb && bytes[2] === 0xbf) {
+          encoding = 'utf-8';
+        } else if (bytes.length >= 2 && bytes[0] === 0xff && bytes[1] === 0xfe) {
+          encoding = 'utf-16le';
+        } else if (bytes.length >= 2 && bytes[0] === 0xfe && bytes[1] === 0xff) {
+          encoding = 'utf-16be';
+        }
+
+        let text;
+        try {
+          text = new TextDecoder(encoding).decode(bytes);
+        } catch (err) {
+          try {
+            text = new TextDecoder('windows-1252').decode(bytes);
+          } catch (e) {
+            text = new TextDecoder('utf-8', { fatal: false }).decode(bytes);
+          }
+        }
+
+        const res = Papa.parse(text, {
+          header: false,
+          skipEmptyLines: true,
+          trim: false,
+          dynamicTyping: false,
+          quoteChar: '"',
+          escapeChar: '"',
+        });
+        const allRows = res.data || [];
+        const parsed = rowsToQuestions(allRows);
+        console.log('Parsed questions:', parsed);
+        setQuestions(parsed);
+      } catch (err) {
+        console.error('Failed to read CSV file:', err);
+        alert('Failed to read CSV file. Check file encoding.');
+      }
     };
-    reader.readAsText(file);
+    reader.readAsArrayBuffer(file);
     e.target.value = "";
   };
 
