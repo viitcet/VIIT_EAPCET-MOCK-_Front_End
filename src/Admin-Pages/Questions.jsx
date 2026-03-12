@@ -37,9 +37,13 @@ const rowsToQuestions = (allRows) => {
   return dataRows
     .map((cols, index) => {
       if (!cols || cols.length < 6) return null;
+      const qText = normalizeSubSup(cols[0] || "");
+      // strip html tags to check if the question is empty after normalization
+      const stripped = (qText || "").replace(/<[^>]*>/g, "").trim();
+      if (!stripped) return null;
       return {
         id: Date.now() + index,
-        question: normalizeSubSup(cols[0] || ""),
+        question: qText,
         optionA: normalizeSubSup(cols[1] || ""),
         optionB: normalizeSubSup(cols[2] || ""),
         optionC: normalizeSubSup(cols[3] || ""),
