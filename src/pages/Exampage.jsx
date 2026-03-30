@@ -79,10 +79,13 @@ function Exampage() {
                 const data = await response.json();
 
                 if (!response.ok) {
-                    if (response.status === 401 || response.status === 403) {
-
+                    if (response.status === 401) {
                         localStorage.removeItem('token');
                         navigate('/login');
+                        return;
+                    } else if (response.status === 403) {
+                        alert('You already attempted this test. Redirecting to results page.');
+                        navigate('/results');
                         return;
                     }
                     throw new Error(data.message || 'Failed to start exam.');
