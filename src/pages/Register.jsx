@@ -25,7 +25,6 @@ function RegistrationForm() {
     city: "",
     state: "",
     pincode: "",
-    photo: null,
     agree: false,
     marks: "",
     collegeName: "",
@@ -82,7 +81,6 @@ function RegistrationForm() {
       "city",
       "state",
       "pincode",
-      "photo",
       "marks",
       "collegeName",
       "collegeAddress",
@@ -138,7 +136,6 @@ function RegistrationForm() {
         city: "",
         state: "",
         pincode: "",
-        photo: null,
         agree: false,
         marks: "",
         collegeName: "",
@@ -217,7 +214,6 @@ function RegistrationForm() {
               <Input label="City/District" name="city" value={formData.city} onChange={handleChange} />
               <Input label="State" name="state" value={formData.state} onChange={handleChange} />
               <Input label="Pincode" name="pincode" value={formData.pincode} onChange={handleChange} />
-              <FileUpload label="Photo Upload" name="photo" onChange={handleChange} />
             </Section>
 
             {/* Declaration */}
@@ -343,22 +339,6 @@ function RadioGroup({ label, name, options, selected, onChange }) {
           </label>
         ))}
       </div>
-    </div>
-  );
-}
-
-function FileUpload({ label, name, onChange }) {
-  return (
-    <div>
-      <label className="block font-medium mb-1 text-black">{label}:</label>
-      <input
-        type="file"
-        name={name}
-        accept=".jpg,.png"
-        onChange={onChange}
-        className="w-full bg-[#EFF7FF] border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-[#003973] outline-none"
-      />
-      <p className="text-xs text-gray-500 mt-1">Max size: 50KB (.jpg/.png)</p>
     </div>
   );
 }

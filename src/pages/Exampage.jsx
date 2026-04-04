@@ -98,7 +98,6 @@ function Exampage() {
                     return acc;
                 }, {});
 
-                // If no questions loaded at all (empty paper)
                 if (Object.keys(groupedQuestions).length === 0) {
                      throw new Error("The selected question paper contains no questions.");
                 }
