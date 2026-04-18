@@ -13,7 +13,7 @@ function NavBar({ onMenuToggle }) {
           <div className="h-10 w-10 rounded-full overflow-hidden bg-white flex items-center justify-center p-1">
             <img
               src={logo}
-              alt="VIITCET Logo"
+              alt="MOCK AP EAPCET Logo"
               className="h-full w-full object-contain"
             />
           </div>

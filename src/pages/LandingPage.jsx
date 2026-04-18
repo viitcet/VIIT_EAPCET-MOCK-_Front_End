@@ -99,7 +99,7 @@ function LandingPage() {
         >
           <div className="max-w-xl text-center md:text-left">
             <h1 className="text-4xl sm:text-5xl font-bold mt-3 text-[#003973]">
-              V I I T  C E T
+              MOCK AP EAPCET
             </h1>
             <h3 className="text-base sm:text-lg font-medium text-gray-700">
               Vignan’s Institute of Information Technology Common Entrance Test
@@ -136,7 +136,7 @@ function LandingPage() {
             </div>
           </div>
         </motion.div>
-        {/* ABOUT VIITCET */}
+        {/* ABOUT Mock AP EAPCET */}
         <motion.section
           id="about"
           initial="hidden"
@@ -147,7 +147,7 @@ function LandingPage() {
         >
           <div className="flex justify-center">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center relative after:content-[''] after:block after:w-[80px] sm:after:w-[120px] after:h-[2px] after:bg-[#003973] after:mx-auto after:mt-2 mb-8 md:mb-10">
-              About VIITCET
+              About MOCK AP EAPCET
             </h2>
           </div>
 
@@ -158,18 +158,18 @@ function LandingPage() {
             >
               <img
                 src={PencilPaper}
-                alt="About VIITCET"
+                alt="About MOCK AP EAPCET"
                 className="rounded-xl w-full max-w-[300px] h-auto sm:w-[320px] sm:h-[240px] object-cover shadow-md"
               />
             </motion.div>
 
             <div className="max-w-xl text-center md:text-justify text-gray-800 leading-relaxed px-2 text-sm sm:text-base">
               <p className="font-medium">
-                Vignan’s Institute of Information Technology Common Entrance Test (VIITCET) is a
+                Vignan’s Institute of Information Technology MOCK AP EAPCET is a
                 premier institution dedicated to excellence in technical
                 education, innovation, and research. Established with a vision
                 to empower students with knowledge and skills for a dynamic
-                future, VIITCET provides a vibrant academic environment supported
+                future, MOCK AP EAPCET provides a vibrant academic environment supported
                 by experienced faculty and modern infrastructure. The college
                 emphasizes holistic development through a blend of academics,
                 hands-on learning, and extracurricular activities.

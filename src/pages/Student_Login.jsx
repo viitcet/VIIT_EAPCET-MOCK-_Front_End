@@ -57,7 +57,7 @@ function Student_Login() {
       <div className="relative flex items-center justify-center min-h-screen bg-white overflow-hidden">
         <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-[0_4px_4px_rgba(0,0,0,0.25)] relative z-10 font-poppins">    
           <h2 className="text-2xl md:text-3xl font-bold text-black mb-8 text-center">
-                        VIITCET Login Form          
+                        Mock AP EAPCET Login Form          
           </h2>
                    
           {error && (

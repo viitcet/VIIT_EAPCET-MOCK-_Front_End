@@ -35,7 +35,7 @@ function NavBarMain() {
               <div className="h-10 w-10 rounded-full overflow-hidden bg-white flex items-center justify-center p-1">
                 <img
                   src={logo}
-                  alt="VIITCET Logo"
+                  alt="MOCK AP EAPCET Logo"
                   className="h-full w-full object-contain"
                 />
               </div>
@@ -51,7 +51,7 @@ function NavBarMain() {
           {/* center: main title */}
           <div className="text-center">
             <div className="text-lg md:text-2xl lg:text-3xl font-bold">
-              VIITCET Portal
+              MOCK AP EAPCET Portal
             </div>
           </div>
 
