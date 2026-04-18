@@ -13,7 +13,7 @@ function RegistrationForm() {
     dob: "",
     gender: "",
     email: "",
-    // password: "",
+    password: "",
     // confirmPassword: "",
     mobile: "",
     altMobile: "",
@@ -43,8 +43,8 @@ function RegistrationForm() {
       "dob",
       "gender",
       "email",
-      // "password",
-      // "confirmPassword",
+      "password",
+      "confirmPassword",
       "mobile"
     ];
 
@@ -91,7 +91,7 @@ function RegistrationForm() {
         dob: "",
         gender: "",
         email: "",
-        // password: "",
+        password: "",
         // confirmPassword: "",
         mobile: "",
         altMobile: "",
@@ -133,8 +133,8 @@ function RegistrationForm() {
               <Select label="Gender*" name="gender" value={formData.gender} onChange={handleChange} options={["Male", "Female", "Other"]} />
               
               {/* Password fields placed in Personal Information as requested */}
-              {/* <Input label="Password*" type="password" name="password" value={formData.password} onChange={handleChange} />
-              <Input label="Confirm Password*" type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} /> */}
+              <Input label="Password*" type="password" name="password" value={formData.password} onChange={handleChange} />
+              <Input label="Confirm Password*" type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} />
             </Section>
 
             {/* Contact Information */}

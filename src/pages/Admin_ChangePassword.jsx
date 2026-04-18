@@ -1,5 +1,5 @@
 // src/pages/Admin_ChangePassword.jsx
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const API = import.meta.env.VITE_API_URL || "";
@@ -37,7 +37,7 @@ function AdminChangePassword() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`, // Send the JWT token
+          "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify({ 
             currentPassword, 
