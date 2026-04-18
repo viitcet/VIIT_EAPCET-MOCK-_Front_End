@@ -6,7 +6,7 @@ import Loader from "../components/Loader";
 function Student_Login() {
   const navigate = useNavigate();
   const API = import.meta.env.VITE_API_URL || "";
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
   const [error, setError] = useState("");
@@ -25,7 +25,7 @@ function Student_Login() {
       const response = await fetch(`${API}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password, role }),
+        body: JSON.stringify({ email, password, role }),
       });
       const result = await response.json(); 
       if (!response.ok) {
@@ -71,13 +71,13 @@ function Student_Login() {
             <div>
                            
               <label className="block font-medium mb-1 text-black">
-                                Username:              
+                                Username/mail id:              
               </label>
                            
               <input
                 type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full bg-[#EFF7FF] border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-[#003973] outline-none shadow-[0_4px_4px_rgba(0,0,0,0.25)]"
               />
                          
